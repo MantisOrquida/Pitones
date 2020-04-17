@@ -1,0 +1,62 @@
+# -*- coding: utf-8 -*-
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+#
+# ===============================================
+# Función para agregarle la proporción a cada 
+# registro del dataframe group en términos del
+# valor del campo 'births'
+# ===============================================
+#
+pd.set_option('display.max_columns',20)
+pd.set_option('display.width',200)
+
+def add_prop(group):
+    # 
+    births = group.births.astype(float)
+    group['prop'] = births / births.sum()
+    return group
+#
+# ===============================================
+# Función para obtener los 1000 registros con mayor
+# valor en el campo 'births'
+# ===============================================
+#    
+def get_top1000(group):
+    return group.sort_index(by='births', ascending=False)[:1000]
+#
+# ===============================================
+#
+    
+
+
+#
+# prefijo para la lectura de los archivos de datos con los nombres de los bebés por año de nacimiento
+#
+prefijoTray= "C:\Users\Arturo\Documents\Python\Nombres\yob%d.txt"
+#
+# lista vacia para guardar los datasets separados
+#
+pieces = []
+#
+# nombres de los campos para los dataframes
+#
+columns = ['name','sex','births']
+#
+# lectura de los archivos de la carpeta por medio del prefijo
+#
+years = range(1880,2019)
+
+for year in years:
+    trayectoria = prefijoTray % year
+    frame = pd.read_csv(trayectoria,names = columns)
+    frame['year'] = year
+    pieces.append(frame)
+#    
+# se concatenan todos los dataframes de la lista pieces en un solo dataframe
+#
+names = pd.concat(pieces,ignore_index = True)
+#
+#
+#
